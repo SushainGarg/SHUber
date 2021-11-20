@@ -51,8 +51,9 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     LocationRequest mLocationRequest;
-    private Button mLogout;
+    private Button mLogout,mSettings;
     String userId;
+    private SupportMapFragment mapFragment;
     private String customerId;
     private Boolean isLoggingOut;
     private LinearLayout mCustomerInfo;
@@ -68,8 +69,15 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(DriverMapActivity.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+        }else{
+            mapFragment.getMapAsync(this);
+        }
+
         mapFragment.getMapAsync(this);
 
         mCustomerInfo = (LinearLayout) findViewById(R.id.CustomerInfo);
@@ -79,6 +87,8 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
         mCustomerPhone = (TextView) findViewById(R.id.customerPhone);
         mCustomerName = (TextView) findViewById(R.id.customerName);
         mCustomerDestination = (TextView) findViewById(R.id.customerDestination);
+
+        mSettings = findViewById(R.id.settings);
 
         mLogout = findViewById(R.id.logout);
         userId =FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -91,11 +101,18 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(DriverMapActivity.this , MainActivity.class);
                 startActivity(intent);
-                finish();
                 return;
             }
         });
 
+        mSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DriverMapActivity.this , DriverSettingsActivity.class);
+                startActivity(intent);
+                return;
+            }
+        });
         getAssignedCustomer();
     }
 
@@ -148,7 +165,6 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
                     mCustomerDestination.setText("Destination: -- ");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -219,12 +235,10 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        buildGoogleApiClient();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
+            ActivityCompat.requestPermissions(DriverMapActivity.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
+        buildGoogleApiClient();
         mMap.setMyLocationEnabled(true);
 
 
@@ -248,10 +262,12 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+            ActivityCompat.requestPermissions(DriverMapActivity.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
+        Boolean con = mGoogleApiClient.isConnected();
+        if(con){
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
     }
 
     @Override
@@ -317,12 +333,37 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
         }
     }
 
+    final int LOCATION_REQUEST_CODE = 1;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch(requestCode){
+            case LOCATION_REQUEST_CODE:{
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    mapFragment.getMapAsync(this);
+                }else{
+                    Toast.makeText(DriverMapActivity.this, "Please Provide the permission", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+
+        }
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
-        if(!isLoggingOut){
-            disconnectDriver();
+        if(isLoggingOut == null){
+            isLoggingOut = true;
         }
+        try{
+            if(!isLoggingOut){
+                disconnectDriver();
+            }
+        }catch (NullPointerException e){
+            Toast.makeText(DriverMapActivity.this, "onStop Null Pointer", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 }

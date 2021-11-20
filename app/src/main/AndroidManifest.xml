@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyUber">
         <activity
+            android:name=".DriverSettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".CustomerMapActivity"
             android:exported="false" />
         <!--

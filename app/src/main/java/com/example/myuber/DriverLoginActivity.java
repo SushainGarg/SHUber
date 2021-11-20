@@ -1,14 +1,14 @@
 package com.example.myuber;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,9 +63,9 @@ public class DriverLoginActivity extends AppCompatActivity {
                             Toast.makeText(DriverLoginActivity.this , "Sign Up Error" , Toast.LENGTH_SHORT).show();
                         }else{
                             String user_id = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(user_id);
-                            current_user_db.setValue(true);
-                            Toast.makeText(DriverLoginActivity.this, "Successsul sign up", Toast.LENGTH_SHORT).show();
+                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(user_id).child("name");
+                            current_user_db.setValue(email);
+                            Toast.makeText(DriverLoginActivity.this, "Successful sign up", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
