@@ -39,6 +39,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.2'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.google.android.libraries.places:places:2.5.0'
+    implementation 'com.github.jd-alexander:library:1.1.0'
     testImplementation 'junit:junit:'
     implementation 'com.firebase:geofire-android:3.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
