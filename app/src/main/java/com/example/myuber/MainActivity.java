@@ -1,11 +1,11 @@
 package com.example.myuber;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     private Button nDriver , nCustomer;
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         nDriver = findViewById(R.id.driver);
         nCustomer = findViewById(R.id.customer);
 
+        startService(new Intent(MainActivity.this , onAppKilled.class));
         nDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -17,6 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyUber">
+        <service android:name=".onAppKilled" android:stopWithTask="false"/>
+        <activity
+            android:name=".HistorySingleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" />
         <activity
             android:name=".DriverSettingsActivity"
             android:exported="false" />

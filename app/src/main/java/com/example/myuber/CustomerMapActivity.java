@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     LocationRequest mLocationRequest;
-    private Button mLogout , mRequest , mSettings;
+    private Button mLogout , mRequest , mSettings , mHistory;
     Marker pickupMarker;
 
     private String destination , requestService;
@@ -79,6 +80,8 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     private TextView mDriverName , mDriverPhone , mDriverCar;
 
     private RadioGroup mRadioGroup;
+
+    private RatingBar mRatingBar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,12 +118,15 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         mDriverCar = (TextView) findViewById(R.id.driverCar);
 
 
-        mLogout = findViewById(R.id.logout);
-        mRequest = findViewById(R.id.request);
-        mSettings = findViewById(R.id.settings);
+        mLogout = (Button) findViewById(R.id.logout);
+        mRequest = (Button)findViewById(R.id.request);
+        mSettings = (Button)findViewById(R.id.settings);
+        mHistory = (Button)findViewById(R.id.history);
 
         mRadioGroup = findViewById(R.id.radioGroup);
         mRadioGroup.check(R.id.UberX);
+
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,16 +141,12 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         mRequest.setOnClickListener(v -> {
            if(requestBol){
                endRide();
-
            }else{
                int SelectedId = mRadioGroup.getCheckedRadioButtonId();
-
                final RadioButton radioButton = (RadioButton) findViewById(SelectedId);
-
                if(radioButton.getText() == null){
                    return;
                }
-
                requestService = radioButton.getText().toString();
                requestBol = true;
                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -166,6 +168,15 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CustomerMapActivity.this , CustomerSettingsActivity.class);
+                startActivity(intent);
+                return;
+            }
+        });
+        mHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomerMapActivity.this , HistoryActivity.class);
+                intent.putExtra("customerOrDriver" ,"Customers" );
                 startActivity(intent);
                 return;
             }
@@ -286,19 +297,30 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         mDriverDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Map<String , Object> map = (Map<String, Object>) snapshot.getValue();
                 if(snapshot.exists() && snapshot.getChildrenCount()>0){
-                    if(map.get("name")!= null){
-                        mDriverName.setText(map.get("name").toString());
+                    if(snapshot.child("name")!= null){
+                        mDriverName.setText(snapshot.child("name").getValue().toString());
                     }
-                    if(map.get("phone")!= null){
-                        mDriverPhone.setText(map.get("phone").toString());
+                    if(snapshot.child("phone")!= null){
+                        mDriverPhone.setText(snapshot.child("phone").getValue().toString());
                     }
-                    if(map.get("car")!= null){
-                        mDriverCar.setText(map.get("car").toString());
+                    if(snapshot.child("car")!= null){
+                        mDriverCar.setText(snapshot.child("car").getValue().toString());
                     }
-                    if(map.get("profileImageUrl")!= null){
-                        Glide.with(getApplication()).load(map.get("profileImageUrl").toString()).into(mDriverProfileImage);
+                    if(snapshot.child("profileImageUrl")!= null){
+                        Glide.with(getApplication()).load(snapshot.child("profileImageUrl").toString()).into(mDriverProfileImage);
+                    }
+
+                    int ratingSum = 0;
+                    float ratingTotal = 0;
+                    float ratingAvg = 0;
+                    for(DataSnapshot child:snapshot.child("rating").getChildren()){
+                        ratingSum += Integer.parseInt(child.getValue().toString());
+                        ratingTotal++;
+                    }
+                    if(ratingTotal!= 0){
+                        ratingAvg = ratingSum/ratingTotal;
+                        mRatingBar.setRating(ratingAvg);
                     }
                 }
             }
