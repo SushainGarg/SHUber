@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
+        <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.2703125" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/drawable/ic_car_driver_background.xml" value="0.2703125" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.2703125" />
@@ -12,7 +13,7 @@
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_customer_login.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_customer_map.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_customer_settings.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_driver_login.xml" value="0.4" />
+        <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_driver_login.xml" value="0.264" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_driver_map.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_driver_settings.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidPractice/MyUber/app/src/main/res/layout/activity_history.xml" value="0.25416666666666665" />
