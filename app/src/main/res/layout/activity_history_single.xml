@@ -6,6 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HistorySingleActivity"
+
+    android:background="@drawable/ic_launcher_background"
+    android:backgroundTint="@color/black"
     android:orientation="vertical">
     <fragment
         android:layout_width="match_parent"
@@ -22,51 +25,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="From - To"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             android:layout_marginBottom="20sp"
             android:id="@+id/rideLocation"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Distance: "
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_marginBottom="20sp"
             android:id="@+id/rideDistance"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="date: "
+            android:text="Date: "
+            android:textStyle="bold"
+            android:textColor="@color/white"
             android:layout_marginBottom="20sp"
             android:id="@+id/rideDate"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:orientation="horizontal">
+
+        android:orientation="vertical">
+
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
             android:id="@+id/userImage"
-            android:src="@mipmap/ic_launcher_round"/>
+            android:layout_width="157dp"
+            android:layout_height="121dp"
+            android:layout_gravity="center"
+
+            android:src="@mipmap/ic_launcher_round" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20sp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="name: "
-                android:layout_marginBottom="20sp"
-                android:id="@+id/userName"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phone: "
-                android:layout_marginBottom="20sp"
-                android:id="@+id/userPhone"/>
+            android:layout_marginTop="20sp"
+            android:orientation="vertical">
+
         </LinearLayout>
     </LinearLayout>
+
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,4 +80,22 @@
         android:numStars="5"
         android:stepSize="1"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginBottom="20sp"
+        android:text="Name: "
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/userPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:text="Phone: "
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 </LinearLayout>

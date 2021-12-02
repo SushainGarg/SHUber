@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DriverSettingsActivity extends AppCompatActivity {
+
+    //Declaration of Layout Components and necessary Variables
     private EditText mNameField , mPhoneField , mCarField;
     private Button mConfirm , mBack;
     private ImageView mProfileImage;
@@ -55,6 +57,7 @@ public class DriverSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_settings);
 
+        //Initialising Layout Components
         mNameField = (EditText) findViewById(R.id.name);
         mPhoneField = (EditText) findViewById(R.id.phone);
         mCarField = (EditText) findViewById(R.id.car);
@@ -72,11 +75,14 @@ public class DriverSettingsActivity extends AppCompatActivity {
 
         getUserInfo();
 
+        //Picking new image on Click
         mProfileImage.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent , 1);
         });
+
+        //Saving data Change on click
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +90,7 @@ public class DriverSettingsActivity extends AppCompatActivity {
             }
         });
 
+        //Going back to DriverMapActivity onClick
        mBack.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -95,10 +102,12 @@ public class DriverSettingsActivity extends AppCompatActivity {
 
 
 
+    //Getting Current User Information
     private void getUserInfo(){
         mDriverDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Getting data from document accessed through Database Reference mDriverDatabase
                 if(snapshot.exists() && snapshot.getChildrenCount()>0){
                     Map<String , Object> map = (Map<String, Object>) snapshot.getValue();
                     if(map.get("name") != null){
@@ -127,6 +136,7 @@ public class DriverSettingsActivity extends AppCompatActivity {
                                 break;
                         }
                     }
+                    //Loading Image using Glide
                     if(map.get("profileImageUrl") != null){
                         mProfileImageUrl = map.get("profileImageUrl").toString();
                         Glide.with(getApplication()).load(mProfileImageUrl).into(mProfileImage);
@@ -142,8 +152,10 @@ public class DriverSettingsActivity extends AppCompatActivity {
         });
     }
 
+    //Saving User Information onClicking Confirm Button
     private void saveUserInformation() {
 
+        //Saving String Data
         mName = mNameField.getText().toString();
         mPhone = mPhoneField.getText().toString();
         mCar = mCarField.getText().toString();
@@ -166,6 +178,7 @@ public class DriverSettingsActivity extends AppCompatActivity {
         userInfo.put("service" , mService);
         mDriverDatabase.updateChildren(userInfo);
 
+        //Attempting to store image URI and data after serialization
         if(resultUri != null){
 
             StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profileImages").child(UserId);
@@ -180,6 +193,7 @@ public class DriverSettingsActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG , 20 , baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = filePath.putBytes(data);
+            //Downloading Image from URI to the device from firebase
             filePath.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -207,6 +221,7 @@ public class DriverSettingsActivity extends AppCompatActivity {
 
     }
 
+    //Getting image data after image selection on target device
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

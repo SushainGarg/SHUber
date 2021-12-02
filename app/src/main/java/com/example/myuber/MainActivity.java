@@ -7,17 +7,21 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//intent When Application is initiated on a device
 public class MainActivity extends AppCompatActivity {
     private Button nDriver , nCustomer;
 
+    //First method to be called
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //initiating Driver and customer buttons
         nDriver = findViewById(R.id.driver);
         nCustomer = findViewById(R.id.customer);
 
+        //Navigating to DriverLoginActivity on clicking Driver button
         startService(new Intent(MainActivity.this , onAppKilled.class));
         nDriver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Navigating to CustomerLoginActivity on clicking Customer button
         nCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

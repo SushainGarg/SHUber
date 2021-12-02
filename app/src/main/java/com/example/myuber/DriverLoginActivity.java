@@ -24,6 +24,8 @@ public class DriverLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListner;
+
+    //first Method Called on intent creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +33,14 @@ public class DriverLoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        //initiating AuthStateListener
         firebaseAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                //getting current user from firebase
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user!=null){
+                    //navigating to next Activity(DriverMapActivity) in case os successful signup or login
                     Intent intent = new Intent(DriverLoginActivity.this , DriverMapActivity.class);
                     startActivity(intent);
                     finish();
@@ -44,40 +49,43 @@ public class DriverLoginActivity extends AppCompatActivity {
             }
         };
 
+        //initiating Email and password editText
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
 
+        //Initiating Login and Registration Button
         mLogin = findViewById(R.id.login);
         mRegisteration = findViewById(R.id.registeration);
 
-        mRegisteration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String email = mEmail.getText().toString();
-                final String password = mPassword.getText().toString();
+        //Initiating method on OnClick action of user on Registration Button
+        mRegisteration.setOnClickListener(v -> {
+            final String email = mEmail.getText().toString();
+            final String password = mPassword.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email , password).addOnCompleteListener(DriverLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()){
-                            Toast.makeText(DriverLoginActivity.this , "Sign Up Error" , Toast.LENGTH_SHORT).show();
-                        }else{
-                            String user_id = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(user_id).child("name");
-                            current_user_db.setValue(email);
-                            Toast.makeText(DriverLoginActivity.this, "Successful sign up", Toast.LENGTH_SHORT).show();
-                        }
+            //Creating new User with given Details
+            mAuth.createUserWithEmailAndPassword(email , password).addOnCompleteListener(DriverLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()){
+                        Toast.makeText(DriverLoginActivity.this , "Sign Up Error" , Toast.LENGTH_SHORT).show();
+                    }else{
+                        String user_id = mAuth.getCurrentUser().getUid();
+                        DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(user_id).child("name");
+                        current_user_db.setValue(email);
+                        Toast.makeText(DriverLoginActivity.this, "Successful sign up", Toast.LENGTH_SHORT).show();
                     }
-                });
-            }
+                }
+            });
         });
 
+        //Initiating method on OnClick action of user on Login Button
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
 
+                //Authenticating and logging in of user on correct data entered
                 mAuth.signInWithEmailAndPassword(email , password).addOnCompleteListener(DriverLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

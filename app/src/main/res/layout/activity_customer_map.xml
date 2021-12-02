@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".CustomerMapActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/design_default_color_background"
+    android:background="@color/black">
 
 
     <fragment
@@ -30,6 +32,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/logout"
             android:text="Logout"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
             android:layout_margin="7dp"/>
         <Button
             android:layout_weight="1"
@@ -37,6 +41,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/history"
             android:text="History"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
             android:layout_margin="7dp"/>
             <Button
                 android:layout_weight="1"
@@ -44,6 +50,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/settings"
                 android:text="Settings"
+                android:backgroundTint="@color/black"
+                android:textColor="@color/white"
                 android:layout_margin="7dp"/>
         </LinearLayout>
 
@@ -123,7 +131,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/design_default_color_surface">
+    android:background="@color/quantum_grey300">
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

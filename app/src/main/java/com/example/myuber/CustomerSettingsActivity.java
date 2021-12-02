@@ -34,16 +34,24 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+//Setting Page for editing Customer Profile
 public class CustomerSettingsActivity extends AppCompatActivity {
+
+    //Declaration for Layout Components and necessary variables
     private EditText mNameField , mPhoneField;
+
     private Button mConfirm , mBack;
+
     private ImageView mProfileImage;
 
 
     private FirebaseAuth mAuth;
+
     private DatabaseReference mCustomerDatabase;
 
+
     private String UserId , mName , mPhone , mProfileImageUrl;
+
     private Uri resultUri;
 
     @Override
@@ -51,6 +59,7 @@ public class CustomerSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_settings);
 
+        //Initialising Layout Components
          mNameField = (EditText) findViewById(R.id.name);
          mPhoneField = (EditText) findViewById(R.id.phone);
 
@@ -63,16 +72,21 @@ public class CustomerSettingsActivity extends AppCompatActivity {
          UserId = mAuth.getCurrentUser().getUid();
          mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(UserId);
 
+         //Gets Current User Info
          getUserInfo();
 
+         //On clicking Profile Image
          mProfileImage.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
+                 //Picking an image from already existing images on the device
                  Intent intent = new Intent(Intent.ACTION_PICK);
                  intent.setType("image/*");
                  startActivityForResult(intent , 1);
              }
          });
+
+         //Saving changed data on clicking
          mConfirm.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -80,6 +94,7 @@ public class CustomerSettingsActivity extends AppCompatActivity {
              }
          });
 
+         //Going back into map Activity
          mBack.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -91,10 +106,12 @@ public class CustomerSettingsActivity extends AppCompatActivity {
 
 
 
+    //For Getting User Information from Firebase
     private void getUserInfo(){
         mCustomerDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Getting Data on Database Reference to user Data Document
                 if(snapshot.exists() && snapshot.getChildrenCount()>0){
                     Map<String , Object> map = (Map<String, Object>) snapshot.getValue();
                     if(map.get("name") != null){
@@ -120,6 +137,7 @@ public class CustomerSettingsActivity extends AppCompatActivity {
         });
     }
 
+    //Saving Changed Information
     private void saveUserInformation() {
 
         mName = mNameField.getText().toString();
@@ -129,6 +147,7 @@ public class CustomerSettingsActivity extends AppCompatActivity {
         userInfo.put("phone" , mPhone);
         mCustomerDatabase.updateChildren(userInfo);
 
+        //Storing Image URI in Firebase and image by serialisation and deserialization
         if(resultUri != null){
 
             StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profileImages").child(UserId);
@@ -170,6 +189,7 @@ public class CustomerSettingsActivity extends AppCompatActivity {
 
     }
 
+    //Method Called when Image is aselected from phone to get image data
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

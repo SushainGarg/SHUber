@@ -6,21 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".CustomerSettingsActivity"
     android:orientation="vertical"
+    android:background="@drawable/ic_launcher_background"
+    android:backgroundTint="@color/black"
     android:padding="20sp">
 
     <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:id="@+id/profileImage"
-        android:src="@mipmap/ic_launcher_round"
-        android:layout_marginBottom="20sp"
-        android:contentDescription="Profile Image" />
 
-    
+
+    android:id="@+id/profileImage"
+    android:layout_width="275dp"
+    android:layout_height="269dp"
+    android:layout_margin="50dp"
+    android:layout_marginBottom="20sp"
+    android:contentDescription="Profile Image"
+    android:gravity="center"
+    android:src="@mipmap/ic_launcher_round" />
+
     <EditText
+
+
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="4dp"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:drawablePadding="40dp"
+        android:padding="20dp"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:background="#30ffffff"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
         android:hint="Name"
         android:id="@+id/name"
         android:layout_marginBottom="20sp"/>
@@ -29,21 +45,44 @@
         android:id="@+id/phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:layout_below="@id/name"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="4dp"
+        android:drawableLeft="@drawable/ic_baseline_phone_24"
+        android:drawablePadding="40dp"
+        android:padding="20dp"
+        android:textColorHint="@color/white"
         android:hint="Phone"
+        android:background="#30ffffff"
+        android:textColor="@color/white"
         android:layout_marginBottom="20sp"
         android:inputType="number"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/confirm"
-        android:text="Confirm"/>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/confirm"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+
+        android:layout_marginBottom="20dp"
+        android:text="Confirm"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:textStyle="bold"/>
+
+    <Button
         android:id="@+id/back"
-        android:text="Back"/>
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/white"
+        android:text="Back"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>

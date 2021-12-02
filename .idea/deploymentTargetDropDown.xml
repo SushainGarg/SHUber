@@ -29,6 +29,15 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\sushain\.android\avd\Pixel_4_XL_Edited_API_29.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+      <Target>
+        <type value="QUICK_BOOT_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
             <value value="C:\Users\sushain\.android\avd\Pixel_4_XL_API_29.avd" />
           </Key>
         </deviceKey>

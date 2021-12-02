@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">MyUber</string>
+    <string name="app_name">SHUber</string>
     <string name="title_activity_driver_map">DriverMapActivity</string>
 </resources>

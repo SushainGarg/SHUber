@@ -5,11 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HistoryActivity"
+    android:orientation="vertical"
+    android:background="@drawable/ic_launcher_background"
+    android:backgroundTint="@color/black"
     android:fitsSystemWindows="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -18,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/historyRecyclerView"
+
                 android:scrollbars="vertical" />
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
